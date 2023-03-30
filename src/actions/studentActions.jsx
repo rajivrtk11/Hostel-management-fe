@@ -219,11 +219,21 @@ export const getStudentsByRoomNo = (roomNo) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(BASE_URL+`/student/room/${roomNo}`, config);
-    dispatch({
-      type: STUDENT_ROOM_NO_SUCCESS,
-      payload: data,
-    });
+    if(roomNo) {
+      const { data } = await axios.get(BASE_URL+`/student/room/${roomNo}`, config);
+      dispatch({
+        type: STUDENT_ROOM_NO_SUCCESS,
+        payload: data,
+      });
+    }
+    else {
+      const { data } = await axios.get(BASE_URL+`/student/allRoom/1`, config);
+      dispatch({
+        type: STUDENT_ROOM_NO_SUCCESS,
+        payload: data,
+      });
+    }
+    
   } catch (error) {
     dispatch({
       type: STUDENT_ROOM_NO_ERROR,
