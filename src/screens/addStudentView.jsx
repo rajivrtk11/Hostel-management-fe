@@ -58,7 +58,31 @@ const AddStudentView = () => {
     }
   }, [successUpdate, success]);
 
-  const submitHandler = () => {
+  const uploadFile = async () => {
+    debugger
+    console.log('inside upload file', image)
+    const formData = new FormData();
+    formData.append('file', image);
+    formData.append('cloud_name', 'deopxwaiz');
+    formData.append('upload_preset', "demo-image");
+
+    fetch('https://api.cloudinary.com/v1_1/deopxwaiz/image/upload', {
+        method: 'POST',
+        body: formData,
+    }).then(response => response.json())
+    .then((data) => {
+        console.log('the data is', data)
+        if (data.secure_url !== '') {
+            const uploadedFileUrl = data.secure_url;
+            submitHandler(uploadedFileUrl)
+            localStorage.setItem('passportUrl', uploadedFileUrl);
+        }
+    })
+    .catch(err => console.error(err));
+  }
+
+  const submitHandler = async(uploadedFileUrl="") => {
+    console.log('the upload file is', uploadedFileUrl)
     if (isEdit === true) {
       const _id = history.location.state.studentProps._id;
       dispatch(
@@ -85,7 +109,7 @@ const AddStudentView = () => {
           city,
           contact,
           fatherContact,
-          image,
+          image: uploadedFileUrl,
           roomNo,
           blockNo,
           status,
@@ -106,10 +130,10 @@ console.log('the image is ', image)
         <>
           {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
           <FormContainer>
-            <h1 onClick={submitHandler}>{isEdit ? "Edit Student" : "Add Student"}</h1>
+            <h1 onClick={uploadFile}>{isEdit ? "Edit Student" : "Add Student"}</h1>
             {loading && <Loading />}
             {error && <Message variant="danger">{error}</Message>}
-            <Form onSubmit={submitHandler}></Form>
+            <Form onSubmit={uploadFile}></Form>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -208,7 +232,7 @@ console.log('the image is ', image)
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Button type="submit" variant="primary" onClick={submitHandler}>
+            <Button type="submit" variant="primary" onClick={uploadFile}>
               {isEdit ? "Update" : "Add Student"}
             </Button>
           </FormContainer>

@@ -9,7 +9,7 @@ const Student = ({ stuentDetails: student }) => {
   return (
     <Card className="my-3 p-3 rounded">
       <Link to={`/student/${student._id}`}>
-      {student.image.data?.data && <img width="211" height="200" border-radius='8%' src={`data:image/jpeg;base64,${arrayBufferToBase64(student.image.data.data)}`}></img>}
+     <img width="211" height="200" border-radius='8%' src={student?.image}></img>
       </Link>
       <Card.Body>
         <Link to={`/student/${student._id}`}>

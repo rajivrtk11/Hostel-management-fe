@@ -79,9 +79,10 @@ export const addStudent = (student) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
+    debugger
     const image = student?.image
     const formData = new FormData();
-    formData.append("avatar", image, image.name)
+    formData.append("image", image)
     formData.append("_id", _id)
     formData.append("name", name)
     formData.append("address", address)
