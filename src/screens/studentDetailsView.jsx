@@ -85,7 +85,7 @@ const StudentDetailsView = ({ match, history }) => {
           {student && (
             <Row>
               <Col md={3}>
-                {student.image.data?.data && <img width="211" height="200" border-radius='8%' src={`data:image/jpeg;base64,${arrayBufferToBase64(student.image.data.data)}`}></img>}
+                {<img width="211" height="200" border-radius='8%' src={student.image}></img>}
               </Col>
               <Col md={3}>
                 <ListGroup variant="flush">
